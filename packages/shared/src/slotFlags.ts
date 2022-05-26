@@ -1,3 +1,9 @@
+/**
+ * 
+ * stable
+ * dynamic
+ * forwarded
+ */
 export const enum SlotFlags {
   /**
    * Stable slots that only reference slot props or context state. The slot

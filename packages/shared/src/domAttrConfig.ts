@@ -1,6 +1,7 @@
 import { makeMap } from './makeMap'
 
 /**
+ * 判断dom属性是可以设置为Boole
  * On the client we only need to offer special cases for boolean attributes that
  * have different names from their corresponding dom properties:
  * - itemscope -> N/A
@@ -15,6 +16,7 @@ const specialBooleanAttrs = `itemscope,allowfullscreen,formnovalidate,ismap,nomo
 export const isSpecialBooleanAttr = /*#__PURE__*/ makeMap(specialBooleanAttrs)
 
 /**
+ * 判断dom Boole属性
  * The full list is needed during SSR to produce the correct initial markup.
  */
 export const isBooleanAttr = /*#__PURE__*/ makeMap(
@@ -32,7 +34,7 @@ export function includeBooleanAttr(value: unknown): boolean {
   return !!value || value === ''
 }
 
-const unsafeAttrCharRE = /[>/="'\u0009\u000a\u000c\u0020]/
+const unsafeAttrCharRE = /[>/="'\u0009\u000a\u000c\u0020]/ // \u0009\u000a\u000c\u0020 = '\t\n\f '
 const attrValidationCache: Record<string, boolean> = {}
 
 export function isSSRSafeAttrName(name: string): boolean {
@@ -54,6 +56,7 @@ export const propsToAttrMap: Record<string, string | undefined> = {
 }
 
 /**
+ * 接受纯数字的 CSS 属性
  * CSS properties that accept plain numbers
  */
 export const isNoUnitNumericStyleProp = /*#__PURE__*/ makeMap(
@@ -69,6 +72,9 @@ export const isNoUnitNumericStyleProp = /*#__PURE__*/ makeMap(
 )
 
 /**
+ * dom 已知属性，用于运行时静态节点的字符串化
+ * 这样我们就不会对无法从 HTML 设置的绑定进行字符串化。
+ * 别忘了允许 `data-*` 和 `aria-*`！
  * Known attributes, this is used for stringification of runtime static nodes
  * so that we don't stringify bindings that cannot be set from HTML.
  * Don't also forget to allow `data-*` and `aria-*`!

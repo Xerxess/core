@@ -3,6 +3,13 @@ import { isNoUnitNumericStyleProp } from './domAttrConfig'
 
 export type NormalizedStyle = Record<string, string | number>
 
+/**
+ * ['color:#fff'] -> {color:'#fff'}
+ * 'color:#fff' -> 'color:#fff'
+ * {color:'#fff'} -> {color:'#fff'}
+ * @param value 
+ * @returns 
+ */
 export function normalizeStyle(
   value: unknown
 ): NormalizedStyle | string | undefined {
@@ -27,9 +34,16 @@ export function normalizeStyle(
   }
 }
 
+// 'color:bad;d:dasdf;background:url(asdf);asdfa:dfdf'.split(/;(?![^(]*\))/g)
+// ['color:bad', 'd:dasdf', 'background:url(asdf)', 'asdfa:dfdf']
 const listDelimiterRE = /;(?![^(]*\))/g
 const propertyDelimiterRE = /:(.+)/
 
+/**
+ * 将'color:#fff' -> {color:'#fff'}
+ * @param cssText 
+ * @returns 
+ */
 export function parseStringStyle(cssText: string): NormalizedStyle {
   const ret: NormalizedStyle = {}
   cssText.split(listDelimiterRE).forEach(item => {
@@ -41,6 +55,11 @@ export function parseStringStyle(cssText: string): NormalizedStyle {
   return ret
 }
 
+/**
+ * 转换为{color:'#fff'} -> 'color:#fff'
+ * @param styles 
+ * @returns 
+ */
 export function stringifyStyle(
   styles: NormalizedStyle | string | undefined
 ): string {
@@ -62,6 +81,13 @@ export function stringifyStyle(
   return ret
 }
 
+
+/**
+ * :class={foo:true,bar:false}
+ * { foo: true, bar: false, baz: true } -> 'foo baz'
+ * @param value 
+ * @returns 
+ */
 export function normalizeClass(value: unknown): string {
   let res = ''
   if (isString(value)) {

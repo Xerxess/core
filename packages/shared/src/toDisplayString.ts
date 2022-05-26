@@ -10,19 +10,14 @@ import {
 } from './index'
 
 /**
+ * 目前只知道用于转换对象为vue识别的专用字符串
  * For converting {{ interpolation }} values to displayed strings.
  * @private
  */
 export const toDisplayString = (val: unknown): string => {
-  return isString(val)
-    ? val
-    : val == null
-    ? ''
-    : isArray(val) ||
-      (isObject(val) &&
-        (val.toString === objectToString || !isFunction(val.toString)))
-    ? JSON.stringify(val, replacer, 2)
-    : String(val)
+  return isString(val) ? val : val == null 
+                       ? '' : isArray(val) || (isObject(val) && (val.toString === objectToString || !isFunction(val.toString)))
+                       ? JSON.stringify(val, replacer, 2) : String(val)
 }
 
 const replacer = (_key: string, val: any): any => {

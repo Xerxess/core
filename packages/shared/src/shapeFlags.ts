@@ -1,3 +1,17 @@
+/**
+ * 一些位标记
+ * element
+ * functional_component
+ * stateful_component
+ * text_children
+ * array_children
+ * slots_children
+ * teleport
+ * suspense
+ * component_should_keep_alive
+ * component_kept_alive
+ * component
+ */
 export const enum ShapeFlags {
   ELEMENT = 1,
   FUNCTIONAL_COMPONENT = 1 << 1,

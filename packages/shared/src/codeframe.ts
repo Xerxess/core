@@ -1,5 +1,16 @@
 const range: number = 2
 
+// 生成以下字符串暂时不知道有何用
+// window.generateCodeFrame(`
+// asdfasdfasdf
+// sdfasfafsd
+// asdfasfd
+// asdfasdfsdf
+// `)
+// result: '1  |  \n   |  ^\n2  |  asdfasdfasdf\n   |  ^^^^^^^^^^^^\n3  |  sdfasfafsd\n   |  ^^^^^^^^^^\n4  |  asdfasfd\n   |  ^^^^^^^^\n5  |  asdfasdfsdf\n   |  ^^^^^^^^^^^'
+
+
+
 export function generateCodeFrame(
   source: string,
   start = 0,

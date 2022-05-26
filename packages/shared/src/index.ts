@@ -94,6 +94,12 @@ export const isBuiltInDirective = /*#__PURE__*/ makeMap(
   'bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo'
 )
 
+/**
+ * 缓存每次执行的结果
+ * 这样的优化绝了
+ * @param fn 
+ * @returns 
+ */
 const cacheStringFunction = <T extends (str: string) => string>(fn: T): T => {
   const cache: Record<string, string> = Object.create(null)
   return ((str: string) => {
@@ -104,6 +110,8 @@ const cacheStringFunction = <T extends (str: string) => string>(fn: T): T => {
 
 const camelizeRE = /-(\w)/g
 /**
+ * 小驼峰 a-b->aB
+ * console.log('key-value'.replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ''))) => keyValue
  * @private
  */
 export const camelize = cacheStringFunction((str: string): string => {
@@ -112,6 +120,8 @@ export const camelize = cacheStringFunction((str: string): string => {
 
 const hyphenateRE = /\B([A-Z])/g
 /**
+ * 小驼峰 aB->a-b
+ * 'keyValue'.replace(/\B([A-Z])/g, '-$1').toLowerCase() => key-value
  * @private
  */
 export const hyphenate = cacheStringFunction((str: string) =>
@@ -119,6 +129,7 @@ export const hyphenate = cacheStringFunction((str: string) =>
 )
 
 /**
+ * ab -> Ab
  * @private
  */
 export const capitalize = cacheStringFunction(
@@ -126,22 +137,40 @@ export const capitalize = cacheStringFunction(
 )
 
 /**
+ * click -> onClick
  * @private
  */
 export const toHandlerKey = cacheStringFunction((str: string) =>
   str ? `on${capitalize(str)}` : ``
 )
 
+/**
+ * 对象是否改变
+ * @param value 
+ * @param oldValue 
+ * @returns 
+ */
 // compare whether a value has changed, accounting for NaN.
 export const hasChanged = (value: any, oldValue: any): boolean =>
   !Object.is(value, oldValue)
 
+/**
+ * 参数传递funs
+ * @param fns 
+ * @param arg 
+ */
 export const invokeArrayFns = (fns: Function[], arg?: any) => {
   for (let i = 0; i < fns.length; i++) {
     fns[i](arg)
   }
 }
 
+/**
+ * 动态添加属性
+ * @param obj 
+ * @param key 
+ * @param value 
+ */
 export const def = (obj: object, key: string | symbol, value: any) => {
   Object.defineProperty(obj, key, {
     configurable: true,
@@ -156,6 +185,10 @@ export const toNumber = (val: any): any => {
 }
 
 let _globalThis: any
+/**
+ * 查的当前全局上下文
+ * @returns 
+ */
 export const getGlobalThis = (): any => {
   return (
     _globalThis ||
